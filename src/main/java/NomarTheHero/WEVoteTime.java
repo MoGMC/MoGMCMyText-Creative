@@ -1,5 +1,7 @@
 package NomarTheHero;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -7,16 +9,16 @@ import org.bukkit.entity.Player;
 public class WEVoteTime implements Runnable {
 
 	private String ign;
+	private UUID uuid;
 	private long startTime, duration;
 	private boolean cancelled = false;
 
-	public WEVoteTime(String ign, long startTime, long duration) {
+	public WEVoteTime(UUID people, long startTime, long duration) {
 
 		// duration in ticks
-
+		uuid = people;
+		ign = Bukkit.getPlayer(uuid).getName();
 		this.duration = duration;
-
-		this.ign = ign;
 		this.startTime = startTime;
 
 	}
@@ -32,7 +34,7 @@ public class WEVoteTime implements Runnable {
 
 		Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "perm player " + ign + " unset worldedit.*");
 
-		Player player = Bukkit.getServer().getPlayer(ign);
+		Player player = Bukkit.getServer().getPlayer(uuid);
 
 		if (player != null) {
 			player.sendMessage(ChatColor.RED + "Your WorldEdit time has ran out!");
@@ -40,13 +42,13 @@ public class WEVoteTime implements Runnable {
 
 		}
 
-		MonkeyPlugin.WEvotes.remove(ign);
+		MonkeyPlugin.WEvotes.remove(uuid);
 
 	}
 
 	public void cancel() {
 		cancelled = true;
-		MonkeyPlugin.WEvotes.remove(ign);
+		MonkeyPlugin.WEvotes.remove(uuid);
 
 	}
 

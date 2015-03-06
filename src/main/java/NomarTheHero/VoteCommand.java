@@ -1,5 +1,7 @@
 package NomarTheHero;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -23,37 +25,39 @@ public class VoteCommand implements CommandExecutor {
 			return true;
 		}
 
-		final String ign = args[0];
+		final String name = args[0];
 
-		final Player player = Bukkit.getServer().getPlayer(ign);
+		final Player player = Bukkit.getServer().getPlayer(name);
 
 		if (player == null) {
-			Bukkit.getServer().getLogger().info("Could not give tempperm time to player " + ign);
+			Bukkit.getServer().getLogger().info("Could not give tempperm time to player " + name);
 			return true;
 
 		}
+
+		UUID uuid = player.getUniqueId();
 
 		String subcmd = args[1].toLowerCase();
 
 		if (subcmd.equals("wetime")) {
 
 			// if player already has voted and is in the 30 min range
-			if (MonkeyPlugin.WEvotes.containsKey(ign)) {
+			if (MonkeyPlugin.WEvotes.containsKey(uuid)) {
 
 				// gets the existing VT var
-				WEVoteTime existing = MonkeyPlugin.WEvotes.get(ign);
+				WEVoteTime existing = MonkeyPlugin.WEvotes.get(uuid);
 
 				// cancels the existing VT var so it doesn't run
 				existing.cancel();
 
 				// makes new VT
-				WEVoteTime newVT = new WEVoteTime(ign, System.currentTimeMillis(), 36000L + existing.getTicksLeft());
+				WEVoteTime newVT = new WEVoteTime(uuid, System.currentTimeMillis(), 36000L + existing.getTicksLeft());
 
 				// removes old VT
-				MonkeyPlugin.WEvotes.remove(ign);
+				MonkeyPlugin.WEvotes.remove(uuid);
 
 				// adds VT to list
-				MonkeyPlugin.WEvotes.put(ign, newVT);
+				MonkeyPlugin.WEvotes.put(uuid, newVT);
 
 				// schedules the VT
 				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, newVT, 36000L + existing.getTicksLeft());
@@ -71,10 +75,10 @@ public class VoteCommand implements CommandExecutor {
 			 */
 
 			// makes new WEVoteTime var
-			WEVoteTime weTime = new WEVoteTime(ign, System.currentTimeMillis(), 36000L);
+			WEVoteTime weTime = new WEVoteTime(uuid, System.currentTimeMillis(), 36000L);
 
 			// puts in in le list
-			MonkeyPlugin.WEvotes.put(ign, weTime);
+			MonkeyPlugin.WEvotes.put(uuid, weTime);
 
 			// 36000 ticks in 30 minutes
 
@@ -82,7 +86,7 @@ public class VoteCommand implements CommandExecutor {
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, weTime, 36000L);
 
 			// allows the player to use WE
-			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "perm player " + ign + " set worldedit.*");
+			Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "perm player " + name + " set worldedit.*");
 
 			return true;
 
@@ -90,9 +94,9 @@ public class VoteCommand implements CommandExecutor {
 
 			String we = ChatColor.GOLD + "WE voting stats: " + ChatColor.YELLOW;
 
-			if (MonkeyPlugin.WEvotes.containsKey(ign)) {
+			if (MonkeyPlugin.WEvotes.containsKey(uuid)) {
 
-				WEVoteTime wev = MonkeyPlugin.WEvotes.get(ign);
+				WEVoteTime wev = MonkeyPlugin.WEvotes.get(uuid);
 
 				we += ("WE time left: (" + wev.getTicksLeft() + "ticks) (" + (wev.getTicksLeft() / 1200.0) + "minutes)");
 

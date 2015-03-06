@@ -3,6 +3,8 @@ package NomarTheHero;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,7 +19,7 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 	private BarMessages barMessages = new BarMessages();
 
-	public static HashMap<String, WEVoteTime> WEvotes = new HashMap<String, WEVoteTime>();
+	public static HashMap<UUID, WEVoteTime> WEvotes = new HashMap<UUID, WEVoteTime>();
 
 	private static MonkeyPlugin staticPlugin;
 
@@ -58,8 +60,8 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 	}
 
 	public void onDisable() {
-		for (String pName : WEvotes.keySet()) {
-			storeVotePlayer(pName, WEvotes.get(pName).getTicksLeft(), "wevote.");
+		for (UUID puuid : WEvotes.keySet()) {
+			storeVotePlayer(puuid, WEvotes.get(puuid).getTicksLeft(), "wevote.");
 
 		}
 
@@ -67,8 +69,8 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 	}
 
-	public void storeVotePlayer(String name, long timeLeft, String path) {
-		getConfig().set(path + name, timeLeft);
+	public void storeVotePlayer(UUID uuid, long timeLeft, String path) {
+		getConfig().set(path + uuid, timeLeft);
 
 	}
 
@@ -76,10 +78,12 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 	public void getVotePlayers() {
 
 		/* fetch the players from "wevote" section of the config */
-		Set<String> wepeoples = getConfig().getConfigurationSection("wevote").getKeys(false);
+		Set<String> WEStrings = getConfig().getConfigurationSection("wevote").getKeys(false);
 
 		// loops through the list
-		for (String people : wepeoples) {
+		for (String string : WEStrings) {
+
+			UUID people = UUID.fromString(string);
 
 			long timeLeft = getConfig().getLong("wevote." + people);
 
