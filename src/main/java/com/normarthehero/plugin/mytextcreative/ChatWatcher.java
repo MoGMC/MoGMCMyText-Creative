@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -21,8 +20,14 @@ public class ChatWatcher implements Listener {
 
 	private String noSpamStarter = ChatColor.BLUE + "[" + ChatColor.LIGHT_PURPLE + "NoSpam" + ChatColor.BLUE + "] " + ChatColor.GOLD;
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
+
+		if (e.getPlayer().hasPermission("mogmc.spam")) {
+			SoundsCommand.playSound(Sound.ITEM_PICKUP);
+			return;
+
+		}
 
 		final String message = e.getMessage();
 
