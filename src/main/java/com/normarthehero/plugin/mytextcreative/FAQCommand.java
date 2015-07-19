@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 public class FAQCommand extends InfoCommand {
 
 	FancyMessage faq = new FancyMessage(" Have any questions?\n Click ").color(ChatColor.GREEN)
-			.then("[here]").color(ChatColor.AQUA).link("http://monkeygamesmc.com/help").color(ChatColor.AQUA)
+			.then("[here]").color(ChatColor.AQUA).link("http://monkeygamesmc.com/help").color(ChatColor.AQUA).tooltip("get help!")
 			.then(" to read the rules, FAQs, and more.").color(ChatColor.GREEN);
 
 	@Override

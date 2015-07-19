@@ -2,8 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.normarthehero.plugin.mytextcreative</groupId>
-	<artifactId>monkeyplugincreative</artifactId>
-	<version>0.2</version>
+	<version>0.3</version>
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>
@@ -69,4 +68,5 @@
 		</resources>
 
 	</build>
+	<artifactId>MoGMCMyText-Creative</artifactId>
 </project>
