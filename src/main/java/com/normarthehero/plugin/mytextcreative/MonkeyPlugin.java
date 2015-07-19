@@ -41,6 +41,7 @@ public class MonkeyPlugin extends JavaPlugin {
 		getCommand("join").setExecutor(new JoinCommand());
 		getCommand("shop").setExecutor(new ShopCommand());
 		getCommand("website").setExecutor(new WebsiteCommand());
+		getCommand("member").setExecutor(new MemberCommand());
 
 		// save config
 		this.saveDefaultConfig();
@@ -48,47 +49,6 @@ public class MonkeyPlugin extends JavaPlugin {
 	}
 
 	public void onDisable() {
-
-	}
-
-	public void storeVotePlayer(UUID uuid, long timeLeft, String path) {
-		getConfig().set(path + uuid, timeLeft);
-
-	}
-
-	public boolean onCommand(CommandSender p, Command cmd, String label, String[] args) {
-
-		if (p.hasPermission("MyText.use")) {
-			if (args.length == 0) {
-				switch (cmd.getName().toLowerCase()) {
-				case "ranks":
-					p.sendMessage(goldLine);
-					p.sendMessage(red + " Info about all ranks can be found here:");
-					p.sendMessage(red + " http://monkeygamesmc.com/help");
-					p.sendMessage(goldLine);
-					return true;
-				case "faq":
-					p.sendMessage(goldLine);
-					p.sendMessage(red + " Frequently Asked Questions:");
-					p.sendMessage(red + " http://MonkeyGamesMC.com/help");
-					p.sendMessage(goldLine);
-					return true;
-				case "member":
-					p.sendMessage(goldLine);
-					p.sendMessage(red + " To get Member visit this page:");
-					p.sendMessage(red + " http://MonkeyGamesMC.com/Member");
-					p.sendMessage(goldLine);
-					return true;
-
-				}
-			}
-
-		} else {
-			p.sendMessage(ChatColor.RED + "You do not have permission to use that command.");
-
-		}
-
-		return false;
 
 	}
 
