@@ -1,7 +1,6 @@
-package NomarTheHero;
+package com.normarthehero.plugin.mytextcreative;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,8 +16,8 @@ public class ChatWatcher implements Listener {
 
 	private final float IPERCENT = .5f;
 
-	private static Map<String, String> playerChat = new HashMap<String, String>();
-	private static Map<String, Long> chatCooldown = new HashMap<String, Long>();
+	private static HashMap<String, String> playerChat = new HashMap<String, String>();
+	private static HashMap<String, Long> chatCooldown = new HashMap<String, Long>();
 
 	private String noSpamStarter = ChatColor.BLUE + "[" + ChatColor.LIGHT_PURPLE + "NoSpam" + ChatColor.BLUE + "] " + ChatColor.GOLD;
 
@@ -26,11 +25,10 @@ public class ChatWatcher implements Listener {
 	public void onChat(AsyncPlayerChatEvent e) {
 
 		final String message = e.getMessage();
+
+		String pName = e.getPlayer().getName();
+
 		final long time = System.currentTimeMillis();
-
-		Player p = e.getPlayer();
-
-		String pName = p.getName();
 
 		if (chatCooldown.containsKey(pName)) {
 
@@ -38,16 +36,16 @@ public class ChatWatcher implements Listener {
 
 			final int onlinePlayers = Bukkit.getOnlinePlayers().length;
 
-			if (onlinePlayers > 25) {
+			if (onlinePlayers > 40) {
 				waitTime = 2000;
 
-			} else if (onlinePlayers > 15) {
+			} else if (onlinePlayers > 20) {
 				waitTime = 1500;
 
 			}
 
 			if (time - chatCooldown.get(pName) < waitTime) {
-				p.sendMessage(noSpamStarter + "Please wait at least " + ChatColor.AQUA + waitTime / 1000.0 + ChatColor.GOLD + " second(s) between messages!");
+				e.getPlayer().sendMessage(noSpamStarter + "Please wait at least " + ChatColor.AQUA + waitTime / 1000.0 + ChatColor.GOLD + " second(s) between messages!");
 				e.setCancelled(true);
 				return;
 
@@ -59,17 +57,36 @@ public class ChatWatcher implements Listener {
 
 		if (playerChat.containsKey(pName)) {
 			if (playerChat.get(pName).equalsIgnoreCase(message)) {
-				p.sendMessage(noSpamStarter + "Please do not say the same message twice!");
+				e.getPlayer().sendMessage(noSpamStarter + "Please do not say the same message twice!");
 				e.setCancelled(true);
+
 				return;
 
 			}
+
 		}
 
 		playerChat.put(pName, message);
 
+		int caps = getCaps(message);
+
+		if (message.length() > 6 && caps > 0) {
+			if ((float) (caps / message.length()) > IPERCENT) {
+				e.setMessage(message.toLowerCase());
+				e.getPlayer().sendMessage(noSpamStarter + "Please do not use too many caps!");
+
+			}
+
+		}
+
+		SoundsCommand.playSound(Sound.ITEM_PICKUP);
+
+	}
+
+	private int getCaps(String message) {
 		int caps = 0;
 
+		// counts how many caps
 		for (int i = 0; i < message.length(); i++) {
 			if (Character.isUpperCase(message.charAt(i))) {
 				caps++;
@@ -77,15 +94,7 @@ public class ChatWatcher implements Listener {
 			}
 		}
 
-		if (message.length() > 6 && caps > 0) {
-			if ((float) caps / message.length() >= IPERCENT) {
-				e.setMessage(message.toLowerCase());
-				p.sendMessage(noSpamStarter + "Please do not use too many caps!");
-
-			}
-		}
-
-		SoundsCommand.playSound(Sound.ITEM_PICKUP);
+		return caps;
 
 	}
 
@@ -94,12 +103,15 @@ public class ChatWatcher implements Listener {
 
 		final String[] msg = e.getMessage().split(" ");
 
-		if (msg.length > 1) {
+		// if the person does "/msg bob", it won't execute.
+
+		if (msg.length > 2) {
 
 			final String cmd = msg[0];
 
-			if (cmd.equalsIgnoreCase("/msg") || cmd.equalsIgnoreCase("/m") || cmd.equalsIgnoreCase("/tell") || cmd.equalsIgnoreCase("/t")) {
+			if (cmd.equalsIgnoreCase("/msg") || cmd.equalsIgnoreCase("/m") || cmd.equalsIgnoreCase("/tell") || cmd.equalsIgnoreCase("/t") || cmd.equalsIgnoreCase("/r")) {
 
+				@SuppressWarnings("deprecation")
 				Player p = Bukkit.getPlayer(msg[1]);
 
 				if (p != null) {
@@ -113,18 +125,12 @@ public class ChatWatcher implements Listener {
 			}
 
 		}
+
 	}
 
 	public static void removePlayer(String name) {
-		if (chatCooldown.containsKey(name)) {
-			chatCooldown.remove(name);
-
-		}
-
-		if (playerChat.containsKey(name)) {
-			playerChat.remove(name);
-
-		}
+		chatCooldown.remove(name);
+		playerChat.remove(name);
 
 	}
 

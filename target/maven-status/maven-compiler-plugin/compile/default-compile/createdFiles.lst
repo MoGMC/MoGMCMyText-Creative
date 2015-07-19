@@ -1,0 +1,9 @@
+com\normarthehero\plugin\mytextcreative\JoinEvent.class
+com\normarthehero\plugin\mytextcreative\JoinCommand.class
+com\normarthehero\plugin\mytextcreative\ChatWatcher.class
+com\normarthehero\plugin\mytextcreative\InfoCommand.class
+com\normarthehero\plugin\mytextcreative\SoundsCommand.class
+com\normarthehero\plugin\mytextcreative\WebsiteCommand.class
+com\normarthehero\plugin\mytextcreative\JoinEvent$1.class
+com\normarthehero\plugin\mytextcreative\ShopCommand.class
+com\normarthehero\plugin\mytextcreative\MonkeyPlugin.class

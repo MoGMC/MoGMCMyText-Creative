@@ -1,4 +1,4 @@
-package NomarTheHero;
+package com.normarthehero.plugin.mytextcreative;
 
 import java.util.Set;
 

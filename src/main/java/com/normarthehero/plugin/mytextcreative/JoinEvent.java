@@ -1,4 +1,4 @@
-package NomarTheHero;
+package com.normarthehero.plugin.mytextcreative;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,12 +20,12 @@ public class JoinEvent implements Listener {
 
 	}
 
-	private String gold = ChatColor.GOLD.toString();
-	private String boldWhite = ChatColor.WHITE.toString() + ChatColor.BOLD.toString();
-	private String grey = ChatColor.GRAY.toString();
-	private String boldGreen = ChatColor.GREEN.toString() + ChatColor.BOLD.toString();
+	// private String gold = ChatColor.GOLD.toString();
+	// private String grey = ChatColor.GRAY.toString();
 
-	String prefix = gold + "*" + grey + "-" + gold + "*" + grey + "-" + gold + "*" + grey + "-" + gold + "*" + grey + "-" + gold + "*" + grey + "-" + gold + "*" + grey + "-" + gold + "*" + grey + "-";
+	// String prefix = gold + "*" + grey + "-" + gold + "*" + grey + "-" + gold
+	// + "*" + grey + "-" + gold + "*" + grey + "-" + gold + "*" + grey + "-" +
+	// gold + "*" + grey + "-" + gold + "*" + grey + "-";
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
@@ -40,20 +40,7 @@ public class JoinEvent implements Listener {
 			@Override
 			public void run() {
 
-				p.sendMessage(prefix + prefix + prefix + gold + "*");
-				p.sendMessage("");
-				p.sendMessage(boldWhite + " Welcome to MonkeyCraft Creative!");
-				p.sendMessage(boldWhite + " Survival IP: Life.MonkeyGamesMC.com");
-				p.sendMessage("");
-				p.sendMessage(boldGreen + " To start building type /plotme auto");
-				p.sendMessage(boldGreen + " Donate: /shop");
-				p.sendMessage(boldGreen + " Member: /member");
-				p.sendMessage(boldGreen + " Info, ranks, minigames etc: /faq");
-				p.sendMessage(boldGreen + " Vote for 30 minutes WorldEdit: /vote");
-				p.sendMessage("");
-				p.sendMessage(boldGreen + " To stay updated visit the homepage regulary!");
-				p.sendMessage("");
-				p.sendMessage(prefix + prefix + prefix + gold + "*");
+				p.performCommand("join");
 
 			}
 		}, 40L);
@@ -74,7 +61,6 @@ public class JoinEvent implements Listener {
 	public void onLeave(PlayerQuitEvent e) {
 		SoundsCommand.playSound(Sound.NOTE_BASS);
 		SoundsCommand.disableSound(e.getPlayer().getName());
-
 		ChatWatcher.removePlayer(e.getPlayer().getName());
 
 	}

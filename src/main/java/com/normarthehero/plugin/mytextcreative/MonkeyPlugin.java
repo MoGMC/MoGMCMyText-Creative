@@ -1,6 +1,5 @@
-package NomarTheHero;
+package com.normarthehero.plugin.mytextcreative;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -10,16 +9,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MonkeyPlugin extends JavaPlugin implements Listener {
-
-	// http://pastebin.com/nGW57tnm
-
-	private BarMessages barMessages = new BarMessages();
-
-	public static HashMap<UUID, WEVoteTime> WEvotes = new HashMap<UUID, WEVoteTime>();
+public class MonkeyPlugin extends JavaPlugin {
 
 	private static MonkeyPlugin staticPlugin;
 
@@ -34,7 +26,6 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 		// register event listeners
 		getServer().getPluginManager().registerEvents(new ChatWatcher(), this);
 		getServer().getPluginManager().registerEvents(new JoinEvent(), this);
-		getServer().getPluginManager().registerEvents(new BuildEvent(), this);
 
 		// list of people who have their sound enabled
 		Set<String> soundEnabled = new HashSet<String>();
@@ -46,59 +37,22 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 		}
 
 		// sets up commands
-		getCommand("tempperm").setExecutor(new VoteCommand(this));
 		getCommand("sounds").setExecutor(new SoundsCommand(soundEnabled));
+		getCommand("join").setExecutor(new JoinCommand());
+		getCommand("shop").setExecutor(new ShopCommand());
+		getCommand("website").setExecutor(new WebsiteCommand());
 
 		// save config
 		this.saveDefaultConfig();
 
-		// sets up bar messages
-		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, barMessages, 0L, 6000L);
-
-		getVotePlayers();
-
 	}
 
 	public void onDisable() {
-		for (UUID puuid : WEvotes.keySet()) {
-			storeVotePlayer(puuid, WEvotes.get(puuid).getTicksLeft(), "wevote.");
-
-		}
-
-		this.saveConfig();
 
 	}
 
 	public void storeVotePlayer(UUID uuid, long timeLeft, String path) {
 		getConfig().set(path + uuid, timeLeft);
-
-	}
-
-	// restores previous time that players had before a shutdown
-	public void getVotePlayers() {
-
-		/* fetch the players from "wevote" section of the config */
-		Set<String> WEStrings = getConfig().getConfigurationSection("wevote").getKeys(false);
-
-		// loops through the list
-		for (String string : WEStrings) {
-
-			UUID people = UUID.fromString(string);
-
-			long timeLeft = getConfig().getLong("wevote." + people);
-
-			getConfig().set("wevote." + people, null);
-
-			WEVoteTime TV = new WEVoteTime(people, System.currentTimeMillis(), timeLeft);
-
-			WEvotes.put(people, TV);
-
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, TV, timeLeft);
-
-		}
-
-		// saves config
-		this.saveConfig();
 
 	}
 
@@ -113,29 +67,10 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 					p.sendMessage(red + " http://monkeygamesmc.com/help");
 					p.sendMessage(goldLine);
 					return true;
-				case "shop":
-					p.sendMessage(goldLine);
-					p.sendMessage(red + " Vip: €7,99 - Vip+: €14,99 - Hero: €24,99 - Legendary - €39,99");
-					p.sendMessage(red + " To see donator ranks and benefits go here:");
-					p.sendMessage(red + " http://monkeygamesmc.com/shop");
-					p.sendMessage(goldLine);
-					return true;
-				case "website":
-					p.sendMessage(goldLine);
-					p.sendMessage(red + " Website:");
-					p.sendMessage(red + " http://MonkeyGamesMC.com");
-					p.sendMessage(goldLine);
-					return true;
 				case "faq":
 					p.sendMessage(goldLine);
 					p.sendMessage(red + " Frequently Asked Questions:");
 					p.sendMessage(red + " http://MonkeyGamesMC.com/help");
-					p.sendMessage(goldLine);
-					return true;
-				case "contest":
-					p.sendMessage(goldLine);
-					p.sendMessage(red + " Info about build contest:");
-					p.sendMessage(red + " http://monkeygamesmc.com/forum/m/20531573/viewthread/11143786/-read-on-building-contests");
 					p.sendMessage(goldLine);
 					return true;
 				case "member":
@@ -147,10 +82,12 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 				}
 			}
+
 		} else {
 			p.sendMessage(ChatColor.RED + "You do not have permission to use that command.");
 
 		}
+
 		return false;
 
 	}
