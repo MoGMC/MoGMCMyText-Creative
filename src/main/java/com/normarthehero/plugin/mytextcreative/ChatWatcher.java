@@ -76,7 +76,7 @@ public class ChatWatcher implements Listener {
 		int caps = getCaps(message);
 
 		if (message.length() > 6 && caps > 0) {
-			if ((float) (caps / message.length()) > IPERCENT) {
+			if ((float) caps / message.length() > IPERCENT) {
 				e.setMessage(message.toLowerCase());
 				e.getPlayer().sendMessage(noSpamStarter + "Please do not use too many caps!");
 
