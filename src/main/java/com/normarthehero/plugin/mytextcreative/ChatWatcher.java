@@ -18,13 +18,14 @@ public class ChatWatcher implements Listener {
 	private static HashMap<String, String> playerChat = new HashMap<String, String>();
 	private static HashMap<String, Long> chatCooldown = new HashMap<String, Long>();
 
-	private String noSpamStarter = ChatColor.BLUE + "[" + ChatColor.LIGHT_PURPLE + "NoSpam" + ChatColor.BLUE + "] " + ChatColor.GOLD;
+	private String noSpamStarter = ChatColor.BLUE + "[" + ChatColor.LIGHT_PURPLE + "NoSpam" + ChatColor.BLUE + "] "
+			+ ChatColor.GOLD;
 
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
 
 		if (e.getPlayer().hasPermission("mogmc.spam")) {
-			SoundsCommand.playSound(Sound.ITEM_PICKUP);
+			SoundsCommand.playSound(Sound.ENTITY_ITEM_PICKUP);
 			return;
 
 		}
@@ -39,7 +40,7 @@ public class ChatWatcher implements Listener {
 
 			int waitTime = 1000;
 
-			final int onlinePlayers = Bukkit.getOnlinePlayers().length;
+			final int onlinePlayers = Bukkit.getOnlinePlayers().size();
 
 			if (onlinePlayers > 40) {
 				waitTime = 2000;
@@ -50,7 +51,8 @@ public class ChatWatcher implements Listener {
 			}
 
 			if (time - chatCooldown.get(pName) < waitTime) {
-				e.getPlayer().sendMessage(noSpamStarter + "Please wait at least " + ChatColor.AQUA + waitTime / 1000.0 + ChatColor.GOLD + " second(s) between messages!");
+				e.getPlayer().sendMessage(noSpamStarter + "Please wait at least " + ChatColor.AQUA + waitTime / 1000.0
+						+ ChatColor.GOLD + " second(s) between messages!");
 				e.setCancelled(true);
 				return;
 
@@ -84,7 +86,7 @@ public class ChatWatcher implements Listener {
 
 		}
 
-		SoundsCommand.playSound(Sound.ITEM_PICKUP);
+		SoundsCommand.playSound(Sound.ENTITY_ITEM_PICKUP);
 
 	}
 
@@ -114,14 +116,15 @@ public class ChatWatcher implements Listener {
 
 			final String cmd = msg[0];
 
-			if (cmd.equalsIgnoreCase("/msg") || cmd.equalsIgnoreCase("/m") || cmd.equalsIgnoreCase("/tell") || cmd.equalsIgnoreCase("/t") || cmd.equalsIgnoreCase("/r")) {
+			if (cmd.equalsIgnoreCase("/msg") || cmd.equalsIgnoreCase("/m") || cmd.equalsIgnoreCase("/tell")
+					|| cmd.equalsIgnoreCase("/t") || cmd.equalsIgnoreCase("/r")) {
 
 				@SuppressWarnings("deprecation")
 				Player p = Bukkit.getPlayer(msg[1]);
 
 				if (p != null) {
 					if (SoundsCommand.soundEnabled(p.getName())) {
-						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1, 1);
+						p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
 
 					}
 

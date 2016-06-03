@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 public class ShopCommand extends InfoCommand {
 
-	private static final FancyMessage message01 = new FancyMessage(" Vip: €7,99 - Vip+: €14,99 - Hero: €24,99 - Legendary - €39,99\n To see donator ranks and benefits, click ").color(ChatColor.GREEN)
+	private static final FancyMessage message01 = new FancyMessage(" Vip: â‚¬7,99 - Vip+: â‚¬14,99 - Hero: â‚¬24,99 - Legendary - â‚¬39,99\n To see donator ranks and benefits, click ").color(ChatColor.GREEN)
 			.then("[here]").tooltip("the official MoGMC shop").link("http://www.monkeygamesmc.com/shop").color(ChatColor.AQUA)
 			.then(".").color(ChatColor.GREEN);
 

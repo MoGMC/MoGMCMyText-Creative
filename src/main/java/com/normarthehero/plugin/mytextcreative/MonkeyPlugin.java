@@ -14,8 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MonkeyPlugin extends JavaPlugin implements Listener {
 
-	private int recordPlayers;
-
 	@Override
 	public void onEnable() {
 		// register event listeners
@@ -39,9 +37,6 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 		getCommand("member").setExecutor(new MemberCommand());
 		getCommand("faq").setExecutor(new FAQCommand());
 
-		// gets record players
-		recordPlayers = getConfig().getInt("recordplayers");
-
 		// save config
 		this.saveDefaultConfig();
 
@@ -52,7 +47,7 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 		final Player p = e.getPlayer();
 
-		SoundsCommand.playSound(Sound.NOTE_PLING);
+		SoundsCommand.playSound(Sound.BLOCK_NOTE_PLING);
 
 		SoundsCommand.enableSound(p.getName());
 
@@ -67,22 +62,12 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 		}, 25L);
 
-		if (Bukkit.getOnlinePlayers().length > recordPlayers) {
-
-			recordPlayers = Bukkit.getOnlinePlayers().length;
-
-			getConfig().set("recordplayers", recordPlayers);
-
-			saveConfig();
-
-		}
-
 	}
 
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
 		SoundsCommand.disableSound(e.getPlayer().getName());
-		SoundsCommand.playSound(Sound.NOTE_BASS);
+		SoundsCommand.playSound(Sound.BLOCK_NOTE_BASS);
 		ChatWatcher.removePlayer(e.getPlayer().getName());
 
 	}
