@@ -1,10 +1,6 @@
 package com.normarthehero.plugin.mytextcreative;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,23 +10,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MonkeyPlugin extends JavaPlugin implements Listener {
 
+	ChatWatcher chatWatcher;
+
 	@Override
 	public void onEnable() {
+
+		SoundsCommand sounds = new SoundsCommand();
+
+		chatWatcher = new ChatWatcher();
+
 		// register event listeners
-		getServer().getPluginManager().registerEvents(new ChatWatcher(), this);
+		getServer().getPluginManager().registerEvents(chatWatcher, this);
+		getServer().getPluginManager().registerEvents(sounds, this);
 		getServer().getPluginManager().registerEvents(this, this);
 
-		// list of people who have their sound enabled
-		Set<String> soundEnabled = new HashSet<String>();
-
-		// add everyone on the server to the sound list
-		for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-			soundEnabled.add(player.getName());
-
-		}
-
 		// sets up commands
-		getCommand("sounds").setExecutor(new SoundsCommand(soundEnabled));
+		getCommand("sounds").setExecutor(sounds);
 		getCommand("join").setExecutor(new JoinCommand());
 		getCommand("shop").setExecutor(new ShopCommand());
 		getCommand("website").setExecutor(new WebsiteCommand());
@@ -47,10 +42,6 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 		final Player p = e.getPlayer();
 
-		SoundsCommand.playSound(Sound.BLOCK_NOTE_PLING);
-
-		SoundsCommand.enableSound(p.getName());
-
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 
 			@Override
@@ -66,9 +57,7 @@ public class MonkeyPlugin extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onLeave(PlayerQuitEvent e) {
-		SoundsCommand.disableSound(e.getPlayer().getName());
-		SoundsCommand.playSound(Sound.BLOCK_NOTE_BASS);
-		ChatWatcher.removePlayer(e.getPlayer().getName());
+		chatWatcher.removePlayer(e.getPlayer().getName());
 
 	}
 

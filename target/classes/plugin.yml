@@ -1,6 +1,7 @@
 name: MoGMCMyText-Creative
 main: com.normarthehero.plugin.mytextcreative.MonkeyPlugin
 version: 0.3
+depend: [PlayerDataPlugin]
 commands:
   join:
     description: Displays a friendly message
@@ -14,4 +15,5 @@ commands:
     description: Links to the Member page
   sounds:
     description: Enable or Disable chat sounds
+    usage: /sounds <on/off>
     aliases: [sound]

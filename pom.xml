@@ -22,14 +22,14 @@
 			<version>5.1.25</version>
 		</dependency>
 		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>LATEST</version>
-		</dependency>
-		<dependency>
 			<groupId>mkremins</groupId>
 			<artifactId>fanciful</artifactId>
 			<version>0.3.3-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.monkeygamesmc</groupId>
+			<artifactId>PlayerDataPlugin</artifactId>
+			<version>0.1</version>
 		</dependency>
 	</dependencies>
 	<build>

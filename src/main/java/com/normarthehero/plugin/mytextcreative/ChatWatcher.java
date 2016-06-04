@@ -4,12 +4,9 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class ChatWatcher implements Listener {
 
@@ -24,8 +21,8 @@ public class ChatWatcher implements Listener {
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e) {
 
+		// ignore chat rules if person has permission
 		if (e.getPlayer().hasPermission("mogmc.spam")) {
-			SoundsCommand.playSound(Sound.ENTITY_ITEM_PICKUP);
 			return;
 
 		}
@@ -86,8 +83,6 @@ public class ChatWatcher implements Listener {
 
 		}
 
-		SoundsCommand.playSound(Sound.ENTITY_ITEM_PICKUP);
-
 	}
 
 	private int getCaps(String message) {
@@ -105,38 +100,7 @@ public class ChatWatcher implements Listener {
 
 	}
 
-	@EventHandler
-	public void commandEvent(PlayerCommandPreprocessEvent e) {
-
-		final String[] msg = e.getMessage().split(" ");
-
-		// if the person does "/msg bob", it won't execute.
-
-		if (msg.length > 2) {
-
-			final String cmd = msg[0];
-
-			if (cmd.equalsIgnoreCase("/msg") || cmd.equalsIgnoreCase("/m") || cmd.equalsIgnoreCase("/tell")
-					|| cmd.equalsIgnoreCase("/t") || cmd.equalsIgnoreCase("/r")) {
-
-				@SuppressWarnings("deprecation")
-				Player p = Bukkit.getPlayer(msg[1]);
-
-				if (p != null) {
-					if (SoundsCommand.soundEnabled(p.getName())) {
-						p.playSound(p.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
-
-					}
-
-				}
-
-			}
-
-		}
-
-	}
-
-	public static void removePlayer(String name) {
+	public void removePlayer(String name) {
 		chatCooldown.remove(name);
 		playerChat.remove(name);
 
