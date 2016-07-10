@@ -1,6 +1,6 @@
-name: MoGMCMyText-Creative
+name: MonkeyPlugin
 main: com.normarthehero.plugin.mytextcreative.MonkeyPlugin
-version: 0.3
+version: 0.4
 depend: [PlayerDataPlugin]
 commands:
   join:
