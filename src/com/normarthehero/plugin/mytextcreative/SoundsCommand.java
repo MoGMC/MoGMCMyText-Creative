@@ -32,9 +32,9 @@ public class SoundsCommand implements CommandExecutor, Listener {
 
 		PlayerDataPlugin pData;
 
-		public SoundsCommand() {
+		public SoundsCommand(PlayerDataPlugin pData) {
 
-			pData = Bukkit.getServer().getServicesManager().load(PlayerDataPlugin.class);
+			this.pData = pData;
 
 			soundDisabled = new HashSet<UUID>();
 

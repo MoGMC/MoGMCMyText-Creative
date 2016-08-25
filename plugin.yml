@@ -17,3 +17,6 @@ commands:
     description: Enable or Disable chat sounds
     usage: /sounds <on/off>
     aliases: [sound]
+  togglejoinmessage:
+    description: Toggles join message on/off
+    usage: /togglejoinmessage
